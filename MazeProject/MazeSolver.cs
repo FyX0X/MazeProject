@@ -26,14 +26,12 @@ namespace MazeProject
             {
 
                 add = paths.Dequeue() as string;
-                //Console.WriteLine(add);
 
                 foreach (char c in "UDLR")
                 {
                     string put = add + c;
 
                     if (validMove(maze, put)) paths.Enqueue(put);
-                    //else Console.WriteLine($"{put} : invalid");
 
                 }
             }

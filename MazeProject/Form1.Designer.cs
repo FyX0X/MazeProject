@@ -130,6 +130,7 @@
             this.showStartEndCB.TabIndex = 6;
             this.showStartEndCB.Text = "show start/end";
             this.showStartEndCB.UseVisualStyleBackColor = true;
+            this.showStartEndCB.CheckedChanged += new System.EventHandler(this.showStartEndCB_CheckedChanged);
             // 
             // saveMazeB
             // 
@@ -148,7 +149,7 @@
             this.showSolutionCB.Location = new System.Drawing.Point(12, 144);
             this.showSolutionCB.Name = "showSolutionCB";
             this.showSolutionCB.Size = new System.Drawing.Size(111, 20);
-            this.showSolutionCB.TabIndex = 9;
+            this.showSolutionCB.TabIndex = 7;
             this.showSolutionCB.Text = "Show solution";
             this.showSolutionCB.UseVisualStyleBackColor = true;
             this.showSolutionCB.CheckedChanged += new System.EventHandler(this.showSolutionCB_CheckedChanged);
@@ -158,7 +159,7 @@
             this.loadMazeB.Location = new System.Drawing.Point(12, 199);
             this.loadMazeB.Name = "loadMazeB";
             this.loadMazeB.Size = new System.Drawing.Size(86, 23);
-            this.loadMazeB.TabIndex = 10;
+            this.loadMazeB.TabIndex = 9;
             this.loadMazeB.Text = "Load maze";
             this.loadMazeB.UseVisualStyleBackColor = true;
             this.loadMazeB.Click += new System.EventHandler(this.loadMazeB_Click);
@@ -179,7 +180,7 @@
             this.changeFileDirB.Location = new System.Drawing.Point(12, 229);
             this.changeFileDirB.Name = "changeFileDirB";
             this.changeFileDirB.Size = new System.Drawing.Size(86, 44);
-            this.changeFileDirB.TabIndex = 11;
+            this.changeFileDirB.TabIndex = 10;
             this.changeFileDirB.Text = "Change file directory";
             this.changeFileDirB.UseVisualStyleBackColor = true;
             this.changeFileDirB.Click += new System.EventHandler(this.changeFileDirB_Click);

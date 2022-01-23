@@ -17,6 +17,7 @@ namespace MazeProject
         public static int gridWidth, gridHeight;
         public Maze maze;
         public bool showSolution;
+        public bool showStartEnd;
 
         public string dataPath;
 
@@ -26,8 +27,13 @@ namespace MazeProject
             Initialize();
 
 
-            gridWidth = 16;
-            gridHeight = 16;
+            gridWidth = Convert.ToInt32(mazeWidth.Value);
+            gridHeight = Convert.ToInt32(mazeHeight.Value);
+
+
+            showSolution = showSolutionCB.Checked;
+            showStartEnd = showStartEndCB.Checked;
+
         }
 
         private void Initialize()
@@ -98,7 +104,6 @@ namespace MazeProject
             Pen pen = new Pen(Color.Black);
             Pen solutionPen = new Pen(Color.Blue);
             Brush brush = new SolidBrush(Color.White);
-            Brush baseFontBrush = new SolidBrush(SystemColors.Control);
             Brush startBrush = new SolidBrush(Color.Green);
             Brush endBrush = new SolidBrush(Color.Red);
             int cellSize = 10;
@@ -111,22 +116,26 @@ namespace MazeProject
 
             //Draw Maze
             Console.WriteLine("erase last maze");
-            g.FillRectangle(baseFontBrush, new Rectangle(new Point(xSpacing, ySpacing), new Size(cellSize * 50, cellSize * 50)));
+            g.Clear(SystemColors.Control);
 
             g.FillRectangle(brush, new Rectangle(new Point(xSpacing, ySpacing), new Size(cellSize * gridWidth + 1, cellSize * gridHeight + 1)));
 
             //draw start cell
-            if (showStartEndCB.Checked)
+            if (showStartEnd)
             {
                 g.FillRectangle(startBrush, new Rectangle(
                     new Point(xSpacing + maze.start[0] * cellSize, ySpacing + maze.start[1] * cellSize),
                     new Size(cellSize, cellSize)));
+                /*
+                g.FillRectangle(endBrush, new Rectangle(
+                    new Point(xSpacing + maze.end[0] * cellSize, ySpacing + maze.end[1] * cellSize),
+                    new Size(cellSize, cellSize)));*/
             }
+
             for (int cellX = 0; cellX < gridWidth; cellX++)
             {
                 for (int cellY = 0; cellY < gridHeight; cellY++)
                 {
-
 
                     if (maze.grid[cellX, cellY].wallUp)
                     {
@@ -156,11 +165,40 @@ namespace MazeProject
                 }
             }
             //draw end cell
-            if (showStartEndCB.Checked)
+            if (showStartEnd)
             {
                 g.FillRectangle(endBrush, new Rectangle(
                     new Point(xSpacing + maze.end[0] * cellSize, ySpacing + maze.end[1] * cellSize),
                     new Size(cellSize, cellSize)));
+
+                //redraw erased wall
+                int endX = maze.end[0];
+                int endY = maze.end[1];
+
+                if (maze.grid[endX, endY].wallUp)
+                {
+                    Point startPoint = new Point(xSpacing + endX * cellSize, ySpacing + endY * cellSize);
+                    Point endPoint = new Point(xSpacing + endX * cellSize + cellSize, ySpacing + endY * cellSize);
+                    g.DrawLine(pen, startPoint, endPoint);
+                }
+                if (maze.grid[endX, endY].wallDown)
+                {
+                    Point startPoint = new Point(xSpacing + endX * cellSize, ySpacing + endY * cellSize + cellSize);
+                    Point endPoint = new Point(xSpacing + endX * cellSize + cellSize, ySpacing + endY * cellSize + cellSize);
+                    g.DrawLine(pen, startPoint, endPoint);
+                }
+                if (maze.grid[endX, endY].wallLeft)
+                {
+                    Point startPoint = new Point(xSpacing + endX * cellSize, ySpacing + endY * cellSize);
+                    Point endPoint = new Point(xSpacing + endX * cellSize, ySpacing + endY * cellSize + cellSize);
+                    g.DrawLine(pen, startPoint, endPoint);
+                }
+                if (maze.grid[endX, endY].wallRight)
+                {
+                    Point startPoint = new Point(xSpacing + endX * cellSize + cellSize, ySpacing + endY * cellSize);
+                    Point endPoint = new Point(xSpacing + endX * cellSize + cellSize, ySpacing + endY * cellSize + cellSize);
+                    g.DrawLine(pen, startPoint, endPoint);
+                }
 
             }
 
@@ -171,7 +209,6 @@ namespace MazeProject
 
                 foreach (char move in maze.solution)
                 {
-                    Console.WriteLine(move);
                     switch (move)
                     {
                         case 'U':
@@ -208,7 +245,13 @@ namespace MazeProject
         private void showSolutionCB_CheckedChanged(object sender, EventArgs e)
         {
             showSolution = showSolutionCB.Checked;
-            paintMaze();
+            if (maze != null) paintMaze();
+        }
+
+        private void showStartEndCB_CheckedChanged(object sender, EventArgs e)
+        {
+            showStartEnd = showStartEndCB.Checked;
+            if(maze != null) paintMaze();
         }
 
         private void generateMaze_Click(object sender, EventArgs e)
