@@ -52,10 +52,11 @@ namespace MazeProject
         {
             if(dataPath == null)
             {
-                if(folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
                 {
                     dataPath = folderBrowserDialog.SelectedPath;
                 }
+                else return;
             }
 
             if (maze.solution == null)
@@ -95,6 +96,7 @@ namespace MazeProject
             //initialize graphics pen brush, etc...
             Graphics g = CreateGraphics();
             Pen pen = new Pen(Color.Black);
+            Pen solutionPen = new Pen(Color.Blue);
             Brush brush = new SolidBrush(Color.White);
             Brush baseFontBrush = new SolidBrush(SystemColors.Control);
             Brush startBrush = new SolidBrush(Color.Green);
@@ -162,6 +164,37 @@ namespace MazeProject
 
             }
 
+            if (showSolution)
+            {
+                int x = xSpacing + cellSize/2;
+                int y = ySpacing + cellSize/2;
+
+                foreach (char move in maze.solution)
+                {
+                    Console.WriteLine(move);
+                    switch (move)
+                    {
+                        case 'U':
+                            g.DrawLine(solutionPen, x, y, x, y - cellSize);
+                            y -= cellSize;
+                            break;
+                        case 'D':
+                            g.DrawLine(solutionPen, x, y, x, y + cellSize);
+                            y += cellSize;
+                            break;
+                        case 'L':
+                            g.DrawLine(solutionPen, x, y, x - cellSize, y);
+                            x -= cellSize;
+                            break;
+                        case 'R':
+                            g.DrawLine(solutionPen, x, y, x + cellSize, y);
+                            x += cellSize;
+                            break;
+
+                    }
+                }
+            }
+
         }
 
         private void changeFileDirB_Click(object sender, EventArgs e)
@@ -170,6 +203,12 @@ namespace MazeProject
             {
                 dataPath = folderBrowserDialog.SelectedPath;
             }
+        }
+
+        private void showSolutionCB_CheckedChanged(object sender, EventArgs e)
+        {
+            showSolution = showSolutionCB.Checked;
+            paintMaze();
         }
 
         private void generateMaze_Click(object sender, EventArgs e)

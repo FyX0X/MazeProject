@@ -151,6 +151,7 @@
             this.showSolutionCB.TabIndex = 9;
             this.showSolutionCB.Text = "Show solution";
             this.showSolutionCB.UseVisualStyleBackColor = true;
+            this.showSolutionCB.CheckedChanged += new System.EventHandler(this.showSolutionCB_CheckedChanged);
             // 
             // loadMazeB
             // 
