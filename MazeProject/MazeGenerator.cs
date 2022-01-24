@@ -6,13 +6,14 @@ namespace MazeProject
     {
 
         //hunt and kill
+        private static Maze maze;
         public static int x, y = 0;
         public static Cell[,] gridConstruct;
         private static int wallsToDelete;
 
         static Random rng = new Random();
 
-        public static Cell[,] Create(int gridWidth, int gridHeight, bool multipleSolution)
+        public static Maze Create(int gridWidth, int gridHeight, bool multipleSolution, bool startEndPosAtCorner)
         {
             x = 0;
             y = 0;
@@ -71,8 +72,21 @@ namespace MazeProject
                 
             }
 
+            maze = new Maze(gridConstruct);
 
-            return gridConstruct;
+            if (startEndPosAtCorner)
+            {
+                maze.start = new int[] { 0, 0 };
+                maze.end = new int[] { gridWidth - 1, gridHeight - 1};
+            }
+            else
+            {
+                maze.start = Form1.startPos;
+                maze.end = Form1.endPos;
+            }
+
+
+            return maze;
 
         }
 
