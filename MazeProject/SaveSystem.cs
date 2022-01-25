@@ -14,7 +14,7 @@ namespace MazeProject
         public static void SaveMaze(Maze maze, string filePath)
         {
             BinaryFormatter bf = new BinaryFormatter();
-            string path = getNextFileName($@"{filePath}\mazeData0.maze");
+            string path = getNextFileName($@"{filePath}\maze({maze.grid.GetLength(0)}x{maze.grid.GetLength(1)})Data0.maze");
 
 
             FileStream stream = new FileStream(path, FileMode.Create);

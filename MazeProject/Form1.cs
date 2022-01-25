@@ -125,6 +125,8 @@ namespace MazeProject
 
             gridWidth = maze.grid.GetLength(0);
             gridHeight = maze.grid.GetLength(1);
+            mazeWidth.Value = gridWidth;
+            mazeHeight.Value = gridHeight;
 
             startPos = maze.start;
             endPos = maze.end;
@@ -503,6 +505,35 @@ namespace MazeProject
             endPos[0]++;
             maze.end = endPos;
             paintchangeSEGrid();
+        }
+
+        private void Form1_MouseClick(object sender, MouseEventArgs e)
+        {
+            Console.WriteLine($"click ({e.X};{e.Y})");
+
+            if (changeSEMode)
+            {
+                double cX = (e.X - xSpacing) / cellSize;
+                double cY = (e.Y - ySpacing) / cellSize;
+                int cellX = Convert.ToInt32(Math.Round(cX));
+                int cellY = Convert.ToInt32(Math.Round(cY));
+
+                if( 0 <= cellX && cellX < gridWidth && 0 <= cellY && cellY < gridHeight)
+                {
+                    if(e.Button == MouseButtons.Left)
+                    {
+                        startPos = new int[] { cellX, cellY };
+                        maze.start = startPos;
+                        paintchangeSEGrid();
+                    }
+                    if(e.Button == MouseButtons.Right)
+                    {
+                        endPos = new int[] { cellX, cellY };
+                        maze.end = endPos;paintchangeSEGrid();
+                    }
+                }
+
+            }
         }
 
         private void showStartEndCB_CheckedChanged(object sender, EventArgs e)

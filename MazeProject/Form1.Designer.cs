@@ -369,6 +369,7 @@
             this.Controls.Add(this.generateMaze);
             this.Name = "Form1";
             this.Text = "Maze Project";
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseClick);
             ((System.ComponentModel.ISupportInitialize)(this.mazeWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mazeHeight)).EndInit();
             this.ResumeLayout(false);
