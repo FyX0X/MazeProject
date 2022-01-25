@@ -10,13 +10,17 @@ namespace MazeProject
         public static int x, y = 0;
         public static Cell[,] gridConstruct;
         private static int wallsToDelete;
+        public static int gridWidth, gridHeight;
 
         static Random rng = new Random();
 
-        public static Maze Create(int gridWidth, int gridHeight, bool multipleSolution, bool startEndPosAtCorner)
+        public static Maze Create(int _gridWidth, int _gridHeight, bool multipleSolution, int[] startPos, int[] endPos)
         {
             x = 0;
             y = 0;
+
+            gridWidth = _gridWidth;
+            gridHeight = _gridHeight;
 
             //create a 2D array filled with Cells
             gridConstruct = new Cell[gridWidth, gridHeight];
@@ -26,20 +30,16 @@ namespace MazeProject
 
             bool isCompleted = false;
 
-            Console.WriteLine($"Stating creation at ({x};{y})######################################################");
+            Console.WriteLine($"Starting generation of a {gridWidth}x{gridHeight} maze");
 
             while (!isCompleted)
             {
-                Console.WriteLine("----------------------------------------------- starting one construction iteration. continue...");
+                //Console.WriteLine("----------------------------------------------- starting one construction iteration. continue...");
 
-                Console.WriteLine($"Current cell : ({x};{y})");
+                //Console.WriteLine($"Current cell : ({x};{y})");
 
                 bool[] canMoveTo = CheckCell.CheckMove(x, y, gridConstruct);
 
-                for (int i = 0; i < 4; i++)
-                {
-                    Console.WriteLine(canMoveTo[i]);
-                }
 
 
                 if (canMoveTo[4]) walk();
@@ -55,17 +55,16 @@ namespace MazeProject
 
                 for (int i = 0; i < wallsToDelete; i++)
                 {
-                    int xToDelete = rng.Next(0, gridWidth);
-                    int yToDelete = rng.Next(0, gridHeight);
+                    int xToDelete = rng.Next(gridWidth);
+                    int yToDelete = rng.Next(gridHeight);
 
                     int wallDirection = rng.Next(0, 4);
-
-                    bool wallIsCoorect = false;
+                    
 
                     while (wallDirection == 0 && yToDelete == 0 || 
-                        wallDirection == 1 && yToDelete == gridWidth - 1 || 
+                        wallDirection == 1 && yToDelete == gridHeight - 1 || 
                         wallDirection == 2 && xToDelete == 0 ||
-                        wallDirection == 3 && xToDelete == gridHeight - 1) wallDirection = rng.Next(0, 4);
+                        wallDirection == 3 && xToDelete == gridWidth - 1) wallDirection = rng.Next(0, 4);
 
                     deleteWall(xToDelete, yToDelete, wallDirection);
                 }
@@ -74,18 +73,11 @@ namespace MazeProject
 
             maze = new Maze(gridConstruct);
 
-            if (startEndPosAtCorner)
-            {
-                maze.start = new int[] { 0, 0 };
-                maze.end = new int[] { gridWidth - 1, gridHeight - 1};
-            }
-            else
-            {
-                maze.start = Form1.startPos;
-                maze.end = Form1.endPos;
-            }
 
-
+            maze.start = startPos;
+            maze.end = endPos;
+            
+            
             return maze;
 
         }
@@ -120,7 +112,7 @@ namespace MazeProject
         }
         static void walk()
         {
-            Console.WriteLine("Walk:");
+            //Console.WriteLine("Walk:");
 
             bool[] canMoveTo = CheckCell.CheckMove(x, y, gridConstruct);
 
@@ -172,23 +164,23 @@ namespace MazeProject
                     break;
             }
 
-            Console.WriteLine($"Move to cell ({x};{y}) => Walk finish.");
+            //Console.WriteLine($"Move to cell ({x};{y}) => Walk finish.");
         }
 
         static bool hunt()
         {
-            Console.WriteLine(">> Hunt:");
+            //Console.WriteLine(">> Hunt:");
 
             bool isMazeCompleted = true;
 
-            for (int huntY = 0; huntY < Form1.gridHeight; huntY++)
+            for (int huntY = 0; huntY < gridHeight; huntY++)
             {
-                for (int huntX = 0; huntX < Form1.gridWidth; huntX++)
+                for (int huntX = 0; huntX < gridWidth; huntX++)
                 {
 
                     if (gridConstruct[huntX, huntY] == null)
                     {
-                        Console.WriteLine($"found a free cell. check for connection with main way...");
+                        //Console.WriteLine($"found a free cell. check for connection with main way...");
 
                         isMazeCompleted = false;
 
@@ -198,7 +190,7 @@ namespace MazeProject
                         {
                             x = huntX;
                             y = huntY;
-                            Console.WriteLine($"Teleport to cell ({x};{y}) => Hunt finish.");
+                            //Console.WriteLine($"Teleport to cell ({x};{y}) => Hunt finish.");
                             gridConstruct[x, y] = new Cell();
 
                             //connect cells
@@ -227,7 +219,7 @@ namespace MazeProject
 
                             return false;
                         }
-                        else Console.WriteLine("Failed. cell not connected.");
+                        //else Console.WriteLine("Failed. cell not connected.");
 
                     }
                 }
@@ -235,7 +227,7 @@ namespace MazeProject
 
             if (isMazeCompleted)
             {
-                Console.WriteLine("Maze completed => Hunt canceled."); // Check if all cells are visited => creation finish
+                Console.WriteLine("Maze completed."); // Check if all cells are visited => creation finish
                 return true;
             }
             else

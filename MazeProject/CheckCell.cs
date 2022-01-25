@@ -17,7 +17,7 @@ namespace MazeProject
             {
                 if (grid[checkedX, checkedY - 1] != null) connections[0] = true;
             }
-            if (checkedY + 1 < Form1.gridHeight)
+            if (checkedY + 1 < grid.GetLength(1))
             {
                 if (grid[checkedX, checkedY + 1] != null) connections[1] = true;
             }
@@ -26,7 +26,7 @@ namespace MazeProject
             {
                 if (grid[checkedX - 1, checkedY] != null) connections[2] = true;
             }
-            if (checkedX + 1 < Form1.gridWidth)
+            if (checkedX + 1 < grid.GetLength(0))
             {
                 if (grid[checkedX + 1, checkedY] != null) connections[3] = true;
             }
@@ -45,7 +45,7 @@ namespace MazeProject
         public static bool[] CheckMove(int checkedX, int checkedY, Cell[,] grid)
         {
 
-            Console.WriteLine("Checking possible movement...");
+            //Console.WriteLine("Checking possible movement...");
 
             bool[] canMoveTo = { false, false, false, false, false }; // indice : 0 up, 1 down, 2 left, 3 right, 4 can move somewhere
 
@@ -54,7 +54,7 @@ namespace MazeProject
             {
                 if (grid[checkedX, checkedY - 1] == null) canMoveTo[0] = true;
             }
-            if (checkedY + 1 < Form1.gridHeight)
+            if (checkedY + 1 < grid.GetLength(1))
             {
                 if (grid[checkedX, checkedY + 1] == null) canMoveTo[1] = true;
             }
@@ -63,7 +63,7 @@ namespace MazeProject
             {
                 if (grid[checkedX - 1, checkedY] == null) canMoveTo[2] = true;
             }
-            if (checkedX + 1 < Form1.gridWidth)
+            if (checkedX + 1 < grid.GetLength(0))
             {
                 if (grid[checkedX + 1, checkedY] == null) canMoveTo[3] = true;
             }

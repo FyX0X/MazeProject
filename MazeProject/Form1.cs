@@ -57,7 +57,8 @@ namespace MazeProject
         private void Initialize()
         {
             string currDir = Directory.GetCurrentDirectory();
-            Directory.CreateDirectory(currDir + @"\mazeData");
+            dataPath = currDir + @"\mazeData";
+            Directory.CreateDirectory(dataPath + "\\AI");
 
         }
 
@@ -536,6 +537,58 @@ namespace MazeProject
             }
         }
 
+        private void generateAIDataB_Click(object sender, EventArgs e)
+        {
+            foreach (Control control in this.Controls)
+            {
+                if (control.Name != "generateAIDataB") control.Enabled = false;
+            }
+
+
+            for (int c = (int)mazeHeight.Minimum; c <= mazeHeight.Maximum; c++)
+            {
+                for (int r = (int)mazeWidth.Minimum; r <= mazeWidth.Maximum; r++)
+                {
+
+                    for (int i = 0; i < 10; i++)
+                    {
+                        Maze maze = MazeGenerator.Create(c, r, false, new int[] { 0, 0 }, new int[] { c - 1, r - 1 });
+                        maze = MazeSolver.bfs(maze);
+
+                        SaveSystem.SaveMaze(maze, dataPath + "\\AI");
+                    }
+                    for (int i = 0; i < 10; i++)
+                    {
+                        Maze maze = MazeGenerator.Create(c, r, true, new int[] { 0, 0 }, new int[] { c - 1, r - 1 });
+                        maze = MazeSolver.bfs(maze);
+
+                        SaveSystem.SaveMaze(maze, dataPath + "\\AI");
+                    }
+                    for (int i = 0; i < 10; i++)
+                    {
+                        Maze maze = MazeGenerator.Create(c, r, false, new int[] { rng.Next(c), rng.Next(r) }, new int[] { rng.Next(c), rng.Next(r) });
+                        maze = MazeSolver.bfs(maze);
+
+                        SaveSystem.SaveMaze(maze, dataPath + "\\AI");
+                    }
+                    for (int i = 0; i < 10; i++)
+                    {
+                        Maze maze = MazeGenerator.Create(c, r, true, new int[] { rng.Next(c), rng.Next(r) }, new int[] { rng.Next(c), rng.Next(r) });
+                        maze = MazeSolver.bfs(maze);
+
+                        SaveSystem.SaveMaze(maze, dataPath + "\\AI");
+                    }
+
+                }
+            }
+
+
+            foreach (Control control in this.Controls)
+            {
+                if (control.Name != "generateAIDataB") control.Enabled = true;
+            }
+        }
+
         private void showStartEndCB_CheckedChanged(object sender, EventArgs e)
         {
             showStartEnd = showStartEndCB.Checked;
@@ -548,7 +601,6 @@ namespace MazeProject
             //generate Maze
             Console.WriteLine("Generating maze...");
 
-            long startTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
 
             if (rngStartEnd)
@@ -558,12 +610,12 @@ namespace MazeProject
 
                 endPos[0] = rng.Next(gridWidth - 1);
                 endPos[1] = rng.Next(gridHeight - 1);
-
-                maze = MazeGenerator.Create(gridWidth, gridHeight, multiSolutionCB.Checked, areStartEndPosCorner);
-            } else
-            {
-                maze = MazeGenerator.Create(gridWidth, gridHeight, multiSolutionCB.Checked, areStartEndPosCorner);
             }
+
+
+            long startTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            maze = MazeGenerator.Create(gridWidth, gridHeight, multiSolutionCB.Checked, startPos, endPos);
+            
 
 
             long endTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();

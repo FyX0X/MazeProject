@@ -53,6 +53,7 @@
             this.endMoveDownB = new System.Windows.Forms.Button();
             this.endMoveUpB = new System.Windows.Forms.Button();
             this.endPosL = new System.Windows.Forms.Label();
+            this.generateAIDataB = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.mazeWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mazeHeight)).BeginInit();
             this.SuspendLayout();
@@ -339,11 +340,22 @@
             this.endPosL.Text = "End Pos:";
             this.endPosL.Visible = false;
             // 
+            // generateAIDataB
+            // 
+            this.generateAIDataB.Location = new System.Drawing.Point(13, 564);
+            this.generateAIDataB.Name = "generateAIDataB";
+            this.generateAIDataB.Size = new System.Drawing.Size(124, 23);
+            this.generateAIDataB.TabIndex = 25;
+            this.generateAIDataB.Text = "GenerateAIData";
+            this.generateAIDataB.UseVisualStyleBackColor = true;
+            this.generateAIDataB.Click += new System.EventHandler(this.generateAIDataB_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(854, 675);
+            this.Controls.Add(this.generateAIDataB);
             this.Controls.Add(this.endMoveRightB);
             this.Controls.Add(this.endMoveLeftB);
             this.Controls.Add(this.endMoveDownB);
@@ -404,6 +416,7 @@
         private System.Windows.Forms.Button endMoveDownB;
         private System.Windows.Forms.Button endMoveUpB;
         private System.Windows.Forms.Label endPosL;
+        private System.Windows.Forms.Button generateAIDataB;
     }
 }
 
